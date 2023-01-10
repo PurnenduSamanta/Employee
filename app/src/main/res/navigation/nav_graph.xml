@@ -41,5 +41,23 @@
         android:id="@+id/listEmployeeFragment"
         android:name="com.purnendu.employee.ui.fragments.ListEmployeeFragment"
         android:label="fragment_list_employee"
-        tools:layout="@layout/fragment_list_employee" />
+        tools:layout="@layout/fragment_list_employee" >
+        <action
+            android:id="@+id/action_listEmployeeFragment_to_updateFragment"
+            app:destination="@id/updateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="com.purnendu.employee.ui.fragments.UpdateFragment"
+        android:label="fragment_update"
+        tools:layout="@layout/fragment_update" >
+        <action
+            android:id="@+id/action_updateFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="employeeData"
+            app:argType="com.purnendu.employee.Employee" />
+    </fragment>
 </navigation>

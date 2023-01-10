@@ -14,4 +14,8 @@ class Repository(database:EmployeeDb)
 
     suspend fun getCountOfEmployeeNo(employeeNo:Long): Long = dao.getCountOfEmployeeNo(employeeNo)
 
+    suspend fun deleteEmployee(employeeNo:Long)= dao.deleteEmployee(employeeNo)
+
+    suspend fun updateEmployee(data:EmployeeModel)= dao.updateEmployee(data)
+
 }

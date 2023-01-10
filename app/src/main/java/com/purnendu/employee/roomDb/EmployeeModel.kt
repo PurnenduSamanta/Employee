@@ -9,5 +9,5 @@ data class EmployeeModel(
     @PrimaryKey
     val employeeNo: Long,
     val employeeName: String,
-    val employeeSalary: Int,
+    val employeeSalary: Int
 )

@@ -50,5 +50,9 @@ class ViewModel(private val repository: Repository) : ViewModel() {
             callback(isExist)
         }
     }
+
+    fun deleteEmployee(employeeNo:Long)=viewModelScope.launch(Dispatchers.IO) { repository.deleteEmployee(employeeNo) }
+
+    fun updateEmployee(date:EmployeeModel)=viewModelScope.launch(Dispatchers.IO) { repository.updateEmployee(date) }
 }
 

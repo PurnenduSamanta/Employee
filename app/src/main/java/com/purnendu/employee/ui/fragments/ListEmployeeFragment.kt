@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.purnendu.employee.Employee
 import com.purnendu.employee.EmployeeRecyclerViewAdapter
 import com.purnendu.employee.Repository
 import com.purnendu.employee.databinding.FragmentListEmployeeBinding
@@ -35,11 +37,17 @@ class ListEmployeeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter= EmployeeRecyclerViewAdapter()
+        adapter= EmployeeRecyclerViewAdapter(requireContext(),{  viewModel.deleteEmployee(it)})
+        {
+          employeeNo,employeeName,employeeSalary->
+            val action = ListEmployeeFragmentDirections.actionListEmployeeFragmentToUpdateFragment(
+                Employee(employeeNo,employeeName,employeeSalary)
+            )
+            findNavController().navigate(action)
+        }
         _binding = FragmentListEmployeeBinding.inflate(inflater, container, false)
         binding.employeeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.employeeRecyclerView.adapter = adapter
-
         return binding.root
     }
 
