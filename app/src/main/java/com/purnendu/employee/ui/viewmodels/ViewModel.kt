@@ -8,6 +8,7 @@ import com.purnendu.employee.Repository
 import com.purnendu.employee.roomDb.EmployeeModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ViewModel(private val repository: Repository) : ViewModel() {
 
@@ -36,23 +37,31 @@ class ViewModel(private val repository: Repository) : ViewModel() {
         return true
     }
 
-    fun isEmployeeNoExist(employeeNo: String,callback:(Boolean)->Unit){
-        viewModelScope.launch(Dispatchers.IO) {
-            val count = repository.getCountOfEmployeeNo(employeeNo.toLong())
-            val isExist= if (count > 0L)
-                false
-            else if (count == 0L)
-                true
-            else if (count == -1L)
-                false
-            else
-                false
+    fun isEmployeeNoExist(employeeNo: String, callback: (Boolean) -> Unit) {
+        viewModelScope.launch(Dispatchers.Main) {
+            var isExist: Boolean
+            withContext(Dispatchers.IO)
+            {
+                val count = repository.getCountOfEmployeeNo(employeeNo.toLong())
+                isExist = if (count > 0L)
+                    false
+                else if (count == 0L)
+                    true
+                else if (count == -1L)
+                    false
+                else
+                    false
+            }
             callback(isExist)
         }
     }
 
-    fun deleteEmployee(employeeNo:Long)=viewModelScope.launch(Dispatchers.IO) { repository.deleteEmployee(employeeNo) }
 
-    fun updateEmployee(date:EmployeeModel)=viewModelScope.launch(Dispatchers.IO) { repository.updateEmployee(date) }
+
+    fun deleteEmployee(employeeNo: Long) =
+        viewModelScope.launch(Dispatchers.IO) { repository.deleteEmployee(employeeNo) }
+
+    fun updateEmployee(date: EmployeeModel) =
+        viewModelScope.launch(Dispatchers.IO) { repository.updateEmployee(date) }
 }
 

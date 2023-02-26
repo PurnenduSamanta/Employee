@@ -46,34 +46,37 @@ class CreateEmployeeFragment : Fragment() {
 
         binding.createEmployee.setOnClickListener {
 
-            var employeeName=binding.name.text.toString()
-            var employeeNo=binding.number.text.toString()
-            var employeeSalary=binding.salary.text.toString()
+            var employeeName = binding.name.text.toString()
+            var employeeNo = binding.number.text.toString()
+            var employeeSalary = binding.salary.text.toString()
 
-            if(!viewModel.validateInput(employeeNo,employeeName,employeeSalary))
-            {
-                Toast.makeText( requireContext(),"Bad input", Toast.LENGTH_SHORT).show()
+            if (!viewModel.validateInput(employeeNo, employeeName, employeeSalary)) {
+                Toast.makeText(requireContext(), "Bad input", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-           viewModel.isEmployeeNoExist(employeeNo)
-           {
+            viewModel.isEmployeeNoExist(employeeNo)
+            {
+                    if (it) {
+                        viewModel.insertEmployee(
+                            EmployeeModel(
+                                employeeNo.toLong(),
+                                employeeName,
+                                employeeSalary.toInt()
+                            )
+                        )
+                        employeeName = ""
+                        employeeNo = ""
+                        employeeSalary = ""
+                        findNavController().popBackStack()
+                    } else
+                        Toast.makeText(
+                            requireContext(),
+                            "Employee No exist already",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-               lifecycleScope.launch(Dispatchers.Main) {
-                   if(it)
-                   {
-                       viewModel.insertEmployee(EmployeeModel(employeeNo.toLong(),employeeName,employeeSalary.toInt()))
-                       employeeName=""
-                       employeeNo=""
-                       employeeSalary=""
-                       findNavController().popBackStack()
-                   }
-                   else
-                   Toast.makeText(requireContext(), "Employee No exist already", Toast.LENGTH_SHORT).show()
-
-               }
-
-           }
+            }
 
         }
 
